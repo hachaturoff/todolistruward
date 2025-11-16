@@ -45,7 +45,7 @@ const props = defineProps({ task: Object })
 const emit  = defineEmits([
   'toggle-completed',
   'delete-task',
-  'save-edit'
+  'edit-task'
 ])
 
 const isEditing = ref(false)
