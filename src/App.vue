@@ -1,24 +1,7 @@
 <template>
   <div class="max-w-xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Список задач</h1>
-    <div class="mb-4 flex gap-2">
-      <input
-        v-model="newTaskText"
-        type="text"
-        placeholder="Текст задачи"
-        class="border px-2 py-1 flex-1"
-      />
-      <datepicker 
-        v-model="newTaskDate" 
-        :locale="locale"
-        :upperLimit="to"
-        :lowerLimit="from"
-        :clearable="true"/>
-
-      <button @click="addTask" class="bg-blue-600 px-4 text-white rounded">
-        Добавить
-      </button>
-    </div>
+    <TaskInput @add-task="addTask"/>
 
     <div class="mb-4 space-x-2">
       <button
@@ -58,7 +41,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import TaskItem from './components/TaskItem.vue'
-import Datepicker from 'vue3-datepicker'
+import TaskInput from './components/TaskInput.vue'
 
 const STORAGE_KEY = 'vue-todo-list'
 
@@ -68,8 +51,6 @@ const tasks = ref(
     date: new Date(t.date)
   }))
 )
-const newTaskText = ref('')
-const newTaskDate = ref(new Date())
 
 const filters = [
   { label: 'Все', value: 'all' },
@@ -82,16 +63,16 @@ const filters = [
 
 const currentFilter = ref('all')
 
-function addTask() {
-  if (!newTaskText.value.trim()) return
+function addTask(task) {
+  
+  if (!task.text.trim()) return;
+
   tasks.value.push({
     id: Date.now(),
-    text: newTaskText.value.trim(),
+    text: task.text.trim(),
     completed: false,
-    date: newTaskDate.value
+    date: task.date
   })
-  newTaskText.value = ''
-  newTaskDate.value = new Date()
 }
 
 function toggleCompleted(id) {
