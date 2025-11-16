@@ -4,11 +4,19 @@
 
     <TaskInput @add-task="addTask"/>
 
-    <TaskFilter v-model="currentFilter" :filters="filters"/>    
+    <TaskFilter v-model="currentFilter" :filters="filters"/>  
+
+    <button 
+      class="mt-4 bg-green-600 px-3 py-1 rounded text-white"
+      @click="toggleSortOrder"
+    >
+      Сортировать по дате
+      <span class="ml-1">{{ sortAsc ? '↑' : '↓' }}</span>
+    </button>  
 
     <ul>
       <TaskItem
-        v-for="task in filteredTasks"
+        v-for="task in sortedFilteredTasks"
         :key="task.id"
         :task="task"
         @toggle-completed="toggleCompleted(task.id)"
@@ -42,6 +50,11 @@ const tasks = ref(
 )
 
 const currentFilter = ref('all')
+const sortAsc = ref(true)
+
+function toggleSortOrder() {
+  sortAsc.value = !sortAsc.value
+}
 
 function addTask(task) {  
   if (!task.text.trim()) return;
@@ -86,6 +99,14 @@ const filteredTasks = computed(() => {
       return tasks.value
   }
 })
+
+const sortedFilteredTasks = computed(() =>
+  filteredTasks.value.slice().sort((a, b) =>
+    sortAsc.value
+      ? a.date - b.date          // старые вверху
+      : b.date - a.date          // новые вверху
+  )
+)
 
 const completedCount = computed(() =>
   tasks.value.filter(t => t.completed).length

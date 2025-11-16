@@ -1,5 +1,5 @@
 <template>
-  <div class="mb-4 space-x-2">
+  <div class="mb-4 w-xl">
     <button
       v-for="f in FILTERS"
       :key="f.value"

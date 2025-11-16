@@ -1,5 +1,5 @@
 <template>
-  <li class="flex items-center justify-between m-2 border rounded p-2">
+  <li class="flex items-center justify-between m-2 border rounded p-2 transition">
     <label :class="{ completed: task.completed }" class="flex items-center gap-2 flex-1 cursor-pointer">
       <input type="checkbox" :checked="task.completed" @change="$emit('toggle-completed')" />
       <div>
@@ -28,5 +28,8 @@ const formattedDate = computed(() => {
 .completed {
   text-decoration: line-through;
   opacity: 0.5;
+}
+.task {
+  transition: all 0.5s ;
 }
 </style>
