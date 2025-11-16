@@ -17,7 +17,7 @@
   </div>
 </template>
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import Datepicker from 'vue3-datepicker'
 
 const text = ref('')

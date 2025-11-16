@@ -1,6 +1,12 @@
 <template>
   <div class="max-w-xl mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">Список задач</h1>
+    <div>
+      <h1 class="text-2xl font-bold mb-4">Список задач</h1>
+      <div v-if="lateTasks.length > 0" class="mb-4 p-4 bg-red-200 text-red-800 rounded">
+        Внимание! У вас {{ lateTasks.length }} просроченная задача
+        <span v-if="lateTasks.length > 1">и</span>.
+      </div>
+    </div>
 
     <TaskInput @add-task="addTask"/>
 
@@ -21,6 +27,7 @@
         :task="task"
         @toggle-completed="toggleCompleted(task.id)"
         @delete-task="deleteTask(task.id)"
+        @edit-task="editTask"
       />
     </ul>
 
@@ -80,6 +87,14 @@ function deleteCompleted() {
   tasks.value = tasks.value.filter(t => !t.completed)
 }
 
+function editTask({ id, text, date }){
+  const t = tasks.value.find(t => t.id === id)
+  if (t) {
+    t.text = text
+    t.date = date
+  }  
+}
+
 const filteredTasks = computed(() => {
   const now = new Date()
   switch (currentFilter.value) {
@@ -103,14 +118,19 @@ const filteredTasks = computed(() => {
 const sortedFilteredTasks = computed(() =>
   filteredTasks.value.slice().sort((a, b) =>
     sortAsc.value
-      ? a.date - b.date          // старые вверху
-      : b.date - a.date          // новые вверху
+      ? a.date - b.date         
+      : b.date - a.date        
   )
 )
 
 const completedCount = computed(() =>
   tasks.value.filter(t => t.completed).length
 )
+
+const lateTasks = computed(() => {
+  const now = new Date()
+  return tasks.value.filter(t => t.date < now && !t.completed)
+})
 
 watch(
   tasks,
