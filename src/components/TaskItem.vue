@@ -1,7 +1,7 @@
 <template>
   <li class="flex items-center justify-between m-2 border rounded p-2">
     <label :class="{ completed: task.completed }" class="flex items-center gap-2 flex-1 cursor-pointer">
-      <input type="checkbox" v-model="task.completed" @change="$emit('toggle-completed')" />
+      <input type="checkbox" :checked="task.completed" @change="$emit('toggle-completed')" />
       <div>
         <div>{{ task.text }}</div>
         <small class="text-gray-500">{{ formattedDate }}</small>
