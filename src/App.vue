@@ -1,22 +1,10 @@
 <template>
   <div class="max-w-xl mx-auto p-4">
     <h1 class="text-2xl font-bold mb-4">Список задач</h1>
+
     <TaskInput @add-task="addTask"/>
 
-    <div class="mb-4 space-x-2">
-      <button
-        v-for="f in filters"
-        class="p-2"
-        :key="f.value"
-        @click="currentFilter = f.value"
-        :class="{
-          'font-bold underline': currentFilter === f.value,
-          'text-gray-600': currentFilter !== f.value
-        }"
-      >
-        {{ f.label }}
-      </button>
-    </div>
+    <TaskFilter v-model="currentFilter" :filters="filters"/>    
 
     <ul>
       <TaskItem
@@ -42,6 +30,7 @@
 import { ref, computed, watch } from 'vue'
 import TaskItem from './components/TaskItem.vue'
 import TaskInput from './components/TaskInput.vue'
+import TaskFilter from './components/TaskFilter.vue'
 
 const STORAGE_KEY = 'vue-todo-list'
 
@@ -52,19 +41,9 @@ const tasks = ref(
   }))
 )
 
-const filters = [
-  { label: 'Все', value: 'all' },
-  { label: 'Активные', value: 'active' },
-  { label: 'Завершенные', value: 'completed' },
-  { label: 'Сегодня', value: 'today' },
-  { label: 'Предстоящие', value: 'future' },
-  { label: 'Просроченные', value: 'late' }
-]
-
 const currentFilter = ref('all')
 
-function addTask(task) {
-  
+function addTask(task) {  
   if (!task.text.trim()) return;
 
   tasks.value.push({
