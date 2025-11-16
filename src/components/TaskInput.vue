@@ -25,7 +25,7 @@ const date  = ref(new Date())
 
 const emit = defineEmits(['add-task'])
 
-function submit() {
+const submit = () => {
   if (!text.value.trim()) return
   emit('add-task', { text: text.value.trim(), date: date.value })
   text.value = ''

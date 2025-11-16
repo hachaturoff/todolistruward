@@ -59,11 +59,11 @@ const tasks = ref(
 const currentFilter = ref('all')
 const sortAsc = ref(true)
 
-function toggleSortOrder() {
+const toggleSortOrder = () => {
   sortAsc.value = !sortAsc.value
 }
 
-function addTask(task) {  
+const addTask = (task) => {  
   if (!task.text.trim()) return;
 
   tasks.value.push({
@@ -74,20 +74,20 @@ function addTask(task) {
   })
 }
 
-function toggleCompleted(id) {
+const toggleCompleted = (id) => {
   const task = tasks.value.find(t => t.id === id)
   if (task) task.completed = !task.completed
 }
 
-function deleteTask(id) {
+const deleteTask = (id) => {
   tasks.value = tasks.value.filter(t => t.id !== id)
 }
 
-function deleteCompleted() {
+const deleteCompleted = () => {
   tasks.value = tasks.value.filter(t => !t.completed)
 }
 
-function editTask({ id, text, date }){
+const editTask = ({ id, text, date }) => {
   const t = tasks.value.find(t => t.id === id)
   if (t) {
     t.text = text

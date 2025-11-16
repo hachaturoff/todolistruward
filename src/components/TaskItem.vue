@@ -51,7 +51,7 @@ const emit  = defineEmits([
 const isEditing = ref(false)
 const draft     = ref({})
 
-function startEdit() {
+const startEdit = () => {
   draft.value = {
     text: props.task.text,
     date: props.task.date.toISOString().substr(0,10)  
@@ -59,7 +59,7 @@ function startEdit() {
   isEditing.value = true
 }
 
-function save() {
+const save = () => {
   emit('edit-task', {
     id: props.task.id,
     text: draft.value.text.trim(),
@@ -68,7 +68,7 @@ function save() {
   isEditing.value = false
 }
 
-function cancel() {
+const cancel = () => {
   isEditing.value = false
 }
 
